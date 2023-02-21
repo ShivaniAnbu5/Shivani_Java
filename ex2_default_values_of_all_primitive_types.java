@@ -16,16 +16,16 @@ public class ex2_default_values_of_all_primitive_types {
 		
 		System.out.println("Defualt values of primitive types:");
 		
-		System.out.println(integer);
-		System.out.println(shortInt);
-		System.out.println(longInt);
-		System.out.println(bool);
-		System.out.println(integer);
-		System.out.println(floatNum);
-		System.out.println(doubleNum);
-		System.out.println(character);
-		System.out.println(byteNum);
+		System.out.println("Default value of integer is "+integer);
+		System.out.println("Default value of short integer is "+shortInt);
+		System.out.println("Default value of long integer is "+longInt+"L");
+		System.out.println("Default value of boolean is "+bool);
+		System.out.println("Default value of float is "+floatNum+"f");
+		System.out.println("Default value of double is "+doubleNum+"d");
+		System.out.println("Default value of character is "+character);
+		System.out.println("Default value of byte is "+byteNum);
 		
 	}
 
 }
+
