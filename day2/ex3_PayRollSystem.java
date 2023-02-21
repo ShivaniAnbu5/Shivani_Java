@@ -11,7 +11,7 @@ public class ex3_PayRollSystem {
 		String className = s.nextLine();
 		className = "exercises." + className;
 		Employee employee = (Employee)Class.forName(className).getConstructor().newInstance() ;
-		System.out.println("Enter date,month and year:");
+		System.out.println("Enter valid date,month and year:(Eg:1/12/2002)");
 		int date = s.nextInt();
 		int month = s.nextInt();
 		int year = s.nextInt();
@@ -72,7 +72,9 @@ class SalesPerson extends Employee{
 }
 
 class Worker extends Employee{
-
+	public Worker(){
+		
+	}
 	@Override
 	void printDateOfJoining(Date ddateOfJoiningate) {
 		// TODO Auto-generated method stub
@@ -95,6 +97,9 @@ class Worker extends Employee{
 
 class SalesManager extends SalesPerson{
 
+	public SalesManager() {
+		
+	}
 	@Override
 	void printDateOfJoining(Date dateOfJoining) {
 		// TODO Auto-generated method stub
@@ -115,7 +120,9 @@ class SalesManager extends SalesPerson{
 }
 
 class SalesTerritoryManager extends SalesManager{
-
+	public SalesTerritoryManager() {
+		
+	}
 	@Override
 	void printDateOfJoining(Date dateOfJoining) {
 		// TODO Auto-generated method stub
