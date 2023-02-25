@@ -10,8 +10,9 @@ public class Ex9NegativeValuesAndOutOfRangeException {
 		String number;
 		int num,average=0,sum=0;
 		System.out.println("Enter the marks for 10 students:");
-		for(int i=0;i<10;i++) {
-			System.out.println("Enter marks for student "+(i+1));
+		int studentCount = 0;
+		while(studentCount != 10) {
+			System.out.println("Enter marks for student "+(studentCount+1)+":");
 			number = s.nextLine();
 			try {
 				num=Integer.parseInt(number);
@@ -20,19 +21,17 @@ public class Ex9NegativeValuesAndOutOfRangeException {
 			}
 			catch(OutOfRangeException oe) {
 				System.out.println(oe.getMessage());
-				i--;
 				continue;
 			}
 			catch(NegativeValueException ne) {
 				System.out.println(ne.getMessage());
-				i--;
 				continue;
 			}
 			catch(NumberFormatException ne) {
 				System.out.println("Number Format Exception....Enter a valid number!!");
-				i--;
 				continue;
 			}
+			studentCount++;
 			sum+=num;
 			
 	}
