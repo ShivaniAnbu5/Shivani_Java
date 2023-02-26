@@ -51,6 +51,6 @@ class OutOfRangeException extends Exception{
 class NegativeValueException extends Exception{
 	public NegativeValueException(String msg) {
 		// TODO Auto-generated constructor stub
-		super(msg);
+		super(msg); 
 	}
 }
