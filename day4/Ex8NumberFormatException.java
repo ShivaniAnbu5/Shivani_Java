@@ -26,7 +26,7 @@ public class Ex8NumberFormatException {
 			sum+=num;
 		}
 		average = sum/10;
-		System.out.println("Average mark is "+average);
+		System.out.println("Average mark is "+average); 
 
 }
 
