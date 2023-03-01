@@ -25,7 +25,7 @@ public class Ex1OddEven {
 	
 	void printOddNumbers() {
 		System.out.println("Odd numbers");
-		for(int i=1;i<100;i++)
+		for(int i=1;i<100;i+=2)
 		{
 			if(i%2 != 0) {
 				System.out.print(i+" ");
@@ -37,7 +37,7 @@ public class Ex1OddEven {
 	
 	void printEvenNumbers() {
 		System.out.println("Even numbers");
-		for(int i=1;i<100;i++)
+		for(int i=2;i<100;i+=2)
 		{
 			if(i%2 == 0) {
 				System.out.print(i+" ");
