@@ -25,6 +25,7 @@ public class EX6TotalOfAllCharacters {
 			}
 			
 		});
+		s.close();
 	}
 
 }
