@@ -2,6 +2,10 @@ package Patterns;
 
 import java.util.Scanner;
 
+//This is a behavioral design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time. 
+
+//The executor of the command does not need to know anything at all about what the command is, what context information it needs on or what it does. All of that is encapsulated in the command.This allows us to do things such as have a list of commands that are executed in order, that are dependent on other items, that are assigned to some triggering event etc.
+
 public class CommandPattern {
 
 	public static void main(String[] args) {

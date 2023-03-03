@@ -1,5 +1,8 @@
 package Patterns;
 
+//Allows a finer control over the construction process.
+//This pattern allows the construction of a complex object by specifying only its type and content.This way the construction process can be used to create different representations. This can be used again to create a different object from the same set of simple objects as the first one.
+
 public class BuilderPattern {
 
 	public static void main(String[] args) {

@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 
 //Visitor lets you define a new operation without changing the classes of the elements on which it operates.
+//This is called visitor pattern since we visit the handler911 method again and again to handle different types of exception
 public class VisitorPattern {
 
 	public static void main(String[] args) {

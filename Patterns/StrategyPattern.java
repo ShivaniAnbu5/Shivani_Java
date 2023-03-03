@@ -2,18 +2,20 @@ package Patterns;
 
 import java.util.Scanner;
 
+//Open for extension and closed for modification
+//There might be a lot of of color paints..So when we want to add a new color to this code, and if we use if-else method,we have to change the main code.But instead of that if we remove if-else and introduce them as classes separately, whenever we want a new color we can just add that new class and we don't have to change the main code at all
+//So we can actually change the code or behaviour of an algorithm at runtime and it will still work
 public class StrategyPattern {
 	public static void main(String[] args) {
-//		BadPaintBrush bbrush=new BadPaintBrush();
-//		bbrush.doPaint(1);
+
 		
 		GoodPaintBrush gbrush=new GoodPaintBrush();
-//		gbrush.paint=new RedPaint();
+
 		Scanner s = new Scanner(System.in);
 		String c = s.nextLine();
 		c = "Patterns." + c;
 		try {
-			gbrush.paint=(Paint) Class.forName(c).getConstructor().newInstance();
+			gbrush.paint=(Paint) Class.forName(c).newInstance();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -23,27 +25,6 @@ public class StrategyPattern {
 	}
 }
 
-
-//class BadPaintBrush{
-//	public void doPaint(int i) {
-//		if(i==1){
-//			System.out.println("red colour...");
-//		}
-//		else if(i==2){
-//			System.out.println("blue colour...");
-//		}
-//		else if(i==3) {
-//			System.out.println("green colour...");
-//		}
-//	}
-//}
-/*
-	steps to remove if-else-if
-	1. delete the if-else-if ladder
-	2. convert the condition to classes
-	3. Group them under a hierarchy
-	4. Create a association between the hierarchial class and the using class
-*/
 class GoodPaintBrush{
 	Paint paint;
 	public void doPaint() {

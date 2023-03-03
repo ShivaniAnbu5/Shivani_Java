@@ -1,5 +1,7 @@
 package Patterns;
 
+//The Factory Method pattern is a creational design pattern used to define a runtime interface for creating an object. It's called a factory because it creates various types of objects without necessarily knowing what kind of object it creates or how to create it
+//Define an interface for creating an object, but let subclasses decide which class to instantiate
 	public class FactoryPattern {
 		public static void main(String[] args)throws Exception {
 			
@@ -15,8 +17,8 @@ package Patterns;
 			String factoryclassname="Patterns.BataFurnitureFactory";
 			String shopclassname="Patterns.AbdulFurnitureShop";
 			
-			FurnitureFactory factory=(FurnitureFactory)Class.forName(factoryclassname).getConstructor().newInstance();
-			FurnitureShop shop=(FurnitureShop)Class.forName(shopclassname).getConstructor().newInstance();
+			FurnitureFactory factory=(FurnitureFactory)Class.forName(factoryclassname).newInstance();
+			FurnitureShop shop=(FurnitureShop)Class.forName(shopclassname).newInstance();
 			
 			shop.setFactory(factory);
 			
