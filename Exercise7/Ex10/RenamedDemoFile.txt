@@ -1,4 +1,1 @@
-Files demo in java yahoo
-2nd line
-3rd line in file
-4th line
+Files demo in java

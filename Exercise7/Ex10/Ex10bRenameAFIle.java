@@ -7,15 +7,15 @@ public class Ex10bRenameAFIle {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		// This is just an abstract representation of a file
-		// A new file is not created
-		File file = new File("/Users/shivania/eclipse-workspace/EventHandlingAndIOStreams/src/Files/Ex10/RenameDemoFile.txt");
+		File file = new File("RenameDemoFile.txt");
 		try {
-			boolean fileCreated = file.createNewFile();
-			if (fileCreated)
+			boolean isFileCreated = file.createNewFile();
+			if (isFileCreated == true) {
 				System.out.println("File created");
-			else
+			}
+			else {
 				System.out.println("Already exists");
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -27,14 +27,16 @@ public class Ex10bRenameAFIle {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String file1Name = "/Users/shivania/eclipse-workspace/EventHandlingAndIOStreams/src/Files/Ex10/RenamedDemoFile.txt";
+
+		String file1Name = "RenamedDemoFile.txt";
 		File file1 = new File(file1Name);
-		boolean renameFile = file.renameTo(file1);
-		if (renameFile)
+		boolean isFileRenamed = file.renameTo(file1);
+		if (isFileRenamed) {
 			System.out.println("File renamed");
-		else
+		}
+		else {
 			System.out.println("File not renamed");
-
+		}
+		
 	}
-
 }

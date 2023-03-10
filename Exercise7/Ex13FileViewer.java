@@ -6,14 +6,12 @@ public class Ex13FileViewer {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String file = "/Users/shivania/eclipse-workspace/EventHandlingAndIOStreams/src/Files/Ex10/RenamedDemoFile.txt";
+		String file = "RenamedDemoFile.txt";
 		try {
-			//Used to read data from the file.It returns data in byte format 
-			//It gets filename in string. It opens the given file in read mode. 
 			FileReader fileReader = new FileReader(file);
-			int i;
-			while((i=fileReader.read())!= -1) {
-				System.out.println((char)i);
+			int asciiValue;
+			while((asciiValue=fileReader.read())!= -1) {
+				System.out.println((char)asciiValue);
 			}
 			fileReader.close();
 		} catch (Exception e) {
