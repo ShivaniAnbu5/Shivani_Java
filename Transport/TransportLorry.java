@@ -11,250 +11,137 @@ import java.time.temporal.WeekFields;
 public class TransportLorry {
 
 	static final int DRIVE_LIMIT_HRS = 8;
-
-	static LocalDateTime currentTime = LocalDateTime.now();
-
-	static int hoursLeftlocalStartTime, minsLeftlocalStartTime, secsLeftlocalStartTime;
-
+	static int hoursLeftOnFirstDay, minsLeftOnFirstDay, secsLeftOnFirstDay;
 	static LocalDateTime resultDateTime, startDateTime;
-
-	static LocalTime localStartTime;
-
-	static float timeWillTakeInHrs, timeWillTakeInMins, timeWillTakeInSeconds;
-
-	static int holidaysCount, weekNumber;
-
-	static int year, month, day;
-
-	static int hour, min, sec;
-
+	static float remainingTimeInHrs, remainingTimeInMins, remainingTimeInSeconds = 0;
 	static Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
-	
 	static Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}:\\d{2}$");
+	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner s = new Scanner(System.in);
-
-		System.out.println("Enter the start date(YYYY-MM-DD): ");
-		String startDate = s.nextLine();
 		
-		boolean isValidDate = DATE_PATTERN.matcher(startDate).matches();
-		while (isValidDate == false) {
-			System.out.println("Enter a valid start date(YYYY-MM-DD): ");
-			startDate = s.nextLine();
-			isValidDate = DATE_PATTERN.matcher(startDate).matches();
-		}
-//		String startDate = "2024-02-19";
-		String dateArray[] = startDate.split("-");
-		year = Integer.parseInt(dateArray[0]);
-		month = Integer.parseInt(dateArray[1]);
-		day = Integer.parseInt(dateArray[2]);
-
-		System.out.println("Enter the start time(HH:MM:SS): ");
-		String startTime = s.nextLine();
-		boolean isValidTime = TIME_PATTERN.matcher(startTime).matches();
-		while (isValidTime == false) {
-			System.out.println("Enter a valid start time(HH:MM:SS): ");
-			startTime = s.nextLine();
-			isValidTime = TIME_PATTERN.matcher(startTime).matches();
-		}
-//		String startTime = "22:45:45";
-		String timeArray[] = startTime.split(":");
-		hour = Integer.parseInt(timeArray[0]);
-		min = Integer.parseInt(timeArray[1]);
-		sec = Integer.parseInt(timeArray[2]);
-
+		System.out.println("Enter the start date(YYYY-MM-DD): ");
+		String startDate = scanner.nextLine();
+		startDate = isValidDateOrTime(startDate, DATE_PATTERN);
+		
+		System.out.println("Enter the start time(HH:MM): ");
+		String startTime = scanner.nextLine();
+		startTime += ":00";
+		startTime = isValidDateOrTime(startTime, TIME_PATTERN);
+		
 		System.out.println("Enter the speed(km/hr): ");
-		float speed = s.nextFloat();
+		float speed = scanner.nextFloat();
+		
 		System.out.println("Enter the distance(km): ");
-		float distance = s.nextFloat();
-
-//		float speed = 5;
-//		float distance = 478;
+		float distance = scanner.nextFloat();
 
 		calculateEndDate(startDate, startTime, speed, distance);
 
+		scanner.close();
+		
+	}
+	
+	static String isValidDateOrTime(String value, Pattern pattern) {
+		boolean isValid = pattern.matcher(value).matches();
+		while (isValid == false) {
+			System.out.println("Invalid! Enter again: ");
+			value = scanner.nextLine();
+			isValid = pattern.matcher(value).matches();
+		}
+		return value;
 	}
 
 	static void calculateEndDate(String startDate, String startTime, float speed, float distance) {
 
-		timeWillTakeInHrs = distance / speed;
-		float addToMins = (float) Math.round((timeWillTakeInHrs - Math.floor(timeWillTakeInHrs)) * 60);
-
-		timeWillTakeInHrs = (float) Math.floor(timeWillTakeInHrs);
-		timeWillTakeInMins = addToMins;
-		timeWillTakeInSeconds = 0;
-
-		System.out.println("Initial timeWillTakeInHrs: " + timeWillTakeInHrs + " timeWillTakeInMins: "
-				+ timeWillTakeInMins + " timeWillTakeInSeconds: " + timeWillTakeInSeconds);
-
+		//Remaining time to travel - calculation
+		remainingTimeInHrs = distance / speed;
+		remainingTimeInMins = (float) Math.round((remainingTimeInHrs - Math.floor(remainingTimeInHrs)) * 60);
+		remainingTimeInHrs = (float) Math.floor(remainingTimeInHrs);
+		System.out.println("Initial remaining hrs: " + remainingTimeInHrs + ", remaining mins: "+ remainingTimeInMins + ", remaining seconds: " + remainingTimeInSeconds);
 		startDateTime = LocalDateTime.parse(startDate + "T" + startTime);
-		localStartTime = LocalTime.parse(startTime);
-
-		hoursLeftlocalStartTime = 24 - localStartTime.getHour();
-		minsLeftlocalStartTime = 60 - localStartTime.getMinute();
-		secsLeftlocalStartTime = 60 - localStartTime.getSecond();
-
-		if (minsLeftlocalStartTime >= 0 && minsLeftlocalStartTime <= 60) {
-			hoursLeftlocalStartTime -= 1;
+		LocalTime localStartTime = LocalTime.parse(startTime);
+		hoursLeftOnFirstDay = 24 - localStartTime.getHour();
+		minsLeftOnFirstDay = 60 - localStartTime.getMinute();
+		if (minsLeftOnFirstDay > 0 && minsLeftOnFirstDay <= 60) {
+			hoursLeftOnFirstDay -= 1;
 		}
+		System.out.println("StartTime hours-left:" + hoursLeftOnFirstDay+", mins-left: " + minsLeftOnFirstDay+", secs-left: " + secsLeftOnFirstDay+"\n");
 
-		if (secsLeftlocalStartTime >= 0 && secsLeftlocalStartTime <= 60) {
-			minsLeftlocalStartTime -= 1;
-		}
-
-//		System.out.println("timeWillTakeInHrs: " + timeWillTakeInHrs + " timeWillTakeInMins: " + timeWillTakeInMins
-//				+ " timeWillTakeInSeconds: " + timeWillTakeInSeconds);
-//
-//		System.out.println("hoursLeftlocalStartTime: " + hoursLeftlocalStartTime);
-//		System.out.println("minsLeftlocalStartTime: " + minsLeftlocalStartTime);
-//		System.out.println("secsLeftlocalStartTime: " + secsLeftlocalStartTime);
-
-		firstDayCalculation(startDateTime);
-		restDaysCalculation();
-
-
-	}
-
-	static void firstDayCalculation(LocalDateTime startDateTime) {
-		if (hoursLeftlocalStartTime > DRIVE_LIMIT_HRS) {
-			resultDateTime = startDateTime.plusHours((long) timeWillTakeInHrs).plusMinutes((long) timeWillTakeInMins).plusSeconds((long) timeWillTakeInSeconds);
-			timeWillTakeInHrs = 0;
-			timeWillTakeInMins = 0;
-			timeWillTakeInSeconds = 0;	
-			resultDateTime = resultDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0);
-		} else if (hoursLeftlocalStartTime < DRIVE_LIMIT_HRS) {
-			
-			if(timeWillTakeInSeconds == 0) {
-				if(timeWillTakeInMins == 0) {
-					timeWillTakeInMins = 59;
-					timeWillTakeInHrs -= 1;
-					timeWillTakeInMins -= minsLeftlocalStartTime;
-				}
-				else {
-					timeWillTakeInMins -= 1;
-					timeWillTakeInMins -= minsLeftlocalStartTime;
-				}
-				timeWillTakeInSeconds = 60 - secsLeftlocalStartTime;
+		//First day calculation
+		if (hoursLeftOnFirstDay > DRIVE_LIMIT_HRS) {
+			if((remainingTimeInHrs == DRIVE_LIMIT_HRS && remainingTimeInMins == 0) || remainingTimeInHrs < DRIVE_LIMIT_HRS) {
+				resultDateTime = startDateTime.plusDays(0).withHour((int)(localStartTime.getHour() + remainingTimeInHrs)).withMinute((int)(localStartTime.getMinute() + remainingTimeInMins));
+				System.out.print("Date and time of reaching: " + resultDateTime.toLocalDate()+ " " + resultDateTime.toLocalTime());
+				resultDateTime = startDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+				System.out.print(" or before " + resultDateTime.toLocalDate()+ " " + resultDateTime.toLocalTime());
+				return;
 			}
-			
-			if(timeWillTakeInMins == 0) {
-				timeWillTakeInHrs -= 1;
-				timeWillTakeInMins = 60 - minsLeftlocalStartTime;
-			}else {
-				timeWillTakeInHrs -= hoursLeftlocalStartTime;
-			}
-
-			resultDateTime = startDateTime.plusHours(hoursLeftlocalStartTime).plusMinutes(minsLeftlocalStartTime)
-					.plusSeconds(secsLeftlocalStartTime);
-			System.out.println("After travelling on first day, current date and time: " + resultDateTime.toLocalDate()+" "+resultDateTime.toLocalTime());
+			else {
+				remainingTimeInHrs -= DRIVE_LIMIT_HRS;
+			}		
+		} 
+		else {
+			remainingTimeInHrs -= hoursLeftOnFirstDay;
+			remainingTimeInMins -= minsLeftOnFirstDay;
 		}
-		System.out.println("timeWillTakeInHrs: " + timeWillTakeInHrs + " timeWillTakeInMins: " + timeWillTakeInMins
-				+ " timeWillTakeInSeconds: " + timeWillTakeInSeconds);
-		System.out.println("After first day calculation!!");
-		System.out.println("---------------------------------------------------\n");
-	}
-
-	static void restDaysCalculation() { 
-		boolean holidayResult;
-		while (timeWillTakeInHrs != 0) {
-
-			System.out.println("timeWillTakeInHrs: "+timeWillTakeInHrs+" timeWillTakeInMins: "+timeWillTakeInMins+" timeWillTakeInSeconds: "+timeWillTakeInSeconds);
-			holidayResult = getIsHoliday();
-			if (holidayResult == false) {
-				if(timeWillTakeInHrs > DRIVE_LIMIT_HRS) {
-					timeWillTakeInHrs -= DRIVE_LIMIT_HRS;
-					resultDateTime = resultDateTime.plusHours(DRIVE_LIMIT_HRS);
-					resultDateTime = resultDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0);
-					System.out.println("(No Holiday) Current Date and time: " + resultDateTime.toLocalDate()+" "+resultDateTime.toLocalTime());
-					System.out.println("-------------------------------");
-					System.out.println();
-				}
-				else {
-					resultDateTime = resultDateTime.plusHours((long) timeWillTakeInHrs).plusMinutes((long) timeWillTakeInMins).plusSeconds((long) timeWillTakeInSeconds);
-					timeWillTakeInHrs = 0;
-					timeWillTakeInMins = 0;
-					timeWillTakeInSeconds = 0;	
-				}
-				
-			} else {
-				resultDateTime = resultDateTime.plusDays(1);
-				System.out.println("(After Holiday) Current Date and time: " + resultDateTime.toLocalDate()+" "+resultDateTime.toLocalTime());
-				System.out.println("-------------------------------");
-				System.out.println();
-			}
-			
-		}
-		System.out.println("\n\n\nDate and time of reaching:  Before " + resultDateTime.toLocalDate() +" "+resultDateTime.toLocalTime());
+		resultDateTime = startDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+		System.out.println("After travelling on first day, \nCurrent date and time: " + resultDateTime.toLocalDate()+ " " + resultDateTime.toLocalTime());
 		
+		//Remaining days calculation
+		boolean isHoliday;
+		while (remainingTimeInHrs != 0) {
+			System.out.println("Remaining hrs: " + remainingTimeInHrs + ", remaining mins: "+ remainingTimeInMins + ", remaining seconds: " + remainingTimeInSeconds +'\n');
+			isHoliday = getIsHoliday();
+			if (isHoliday == false) {
+				if (remainingTimeInHrs > DRIVE_LIMIT_HRS) {
+					remainingTimeInHrs -= DRIVE_LIMIT_HRS;
+					resultDateTime = resultDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+				} else {
+					resultDateTime = resultDateTime.plusHours((long) remainingTimeInHrs).plusMinutes((long) remainingTimeInMins).plusSeconds((long) remainingTimeInSeconds);
+					remainingTimeInHrs = 0;
+				}
+			}
+			else {
+				resultDateTime = resultDateTime.plusDays(1);	
+			}
+			System.out.println("Current Date and time: " + resultDateTime.toLocalDate() + " " + resultDateTime.toLocalTime());	
+		}
+		
+		//Final reaching date and time
+		System.out.print("Date and time of reaching: " + resultDateTime.toLocalDate()+ " " + resultDateTime.toLocalTime());
+		resultDateTime = resultDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+		System.out.print(" or before " + resultDateTime.toLocalDate()+ " " + resultDateTime.toLocalTime());
+
 	}
 
 	static boolean getIsHoliday() {
 		
+		int year = resultDateTime.getYear();
+		int month = resultDateTime.getMonthValue();
+		int day = resultDateTime.getDayOfMonth();
+		int dayOfWeek = resultDateTime.getDayOfWeek().getValue();
+
 		boolean isHoliday = false;
-		
-		if (resultDateTime.getMonthValue() == 1 && resultDateTime.getDayOfMonth() == 1) {
-			System.out.println(resultDateTime.toLocalDate()+" Jan 1 holiday!");
+
+		if ((month == 1 && (day == 1 || day == 26)) || (month == 4 && day == 14) || (month == 5 && day == 1) || (month == 8 && day == 15) || (month == 9 && day == 5) || (month == 10 && day == 2) || (month == 11 && day == 14) || (month == 12 && day == 25) ) {		
+			System.out.println(resultDateTime.toLocalDate() + " Holiday!");
 			isHoliday = true;
 		}
 
-		if (resultDateTime.getMonthValue() == 1 && resultDateTime.getDayOfMonth() == 26) {
-			System.out.println(resultDateTime.toLocalDate()+" Jan 26 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 4 && resultDateTime.getDayOfMonth() == 14) {
-			System.out.println(resultDateTime.toLocalDate()+" April 14 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 5 && resultDateTime.getDayOfMonth() == 1) {
-			System.out.println(resultDateTime.toLocalDate()+" May 1 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 8 && resultDateTime.getDayOfMonth() == 15) {
-			System.out.println(resultDateTime.toLocalDate()+" Aug 15 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 9 && resultDateTime.getDayOfMonth() == 5) {
-			System.out.println(resultDateTime.toLocalDate()+" September 5 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 10 && resultDateTime.getDayOfMonth() == 2) {
-			System.out.println(resultDateTime.toLocalDate()+" October 2 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 11 && resultDateTime.getDayOfMonth() == 14) {
-			System.out.println(resultDateTime.toLocalDate()+" November 14 holiday!");
-			isHoliday = true;
-		}
-
-		else if (resultDateTime.getMonthValue() == 12 && resultDateTime.getDayOfMonth() == 25) {
-			System.out.println(resultDateTime.toLocalDate()+" Dec 25 holiday!");
-			isHoliday = true;
-		}
-
-		if (resultDateTime.getDayOfWeek().getValue() == 7) {
-			System.out.println(resultDateTime.toLocalDate()+" Sunday!!");
+		if (dayOfWeek == 7) {
+			System.out.println(resultDateTime.toLocalDate() + " Sunday holiday!");
 			isHoliday = true;
 		}
 
 		Locale locale = Locale.ROOT;
-		LocalDate date = LocalDate.of(resultDateTime.getYear(), resultDateTime.getMonth().getValue(), resultDateTime.getDayOfMonth());
+		LocalDate date = LocalDate.of(year,month,day);
 		int weekOfMonth = date.get(WeekFields.of(locale).weekOfMonth());
-
-		if (weekOfMonth == 2 && resultDateTime.getDayOfWeek().getValue() == 6) {
-			System.out.println(resultDateTime.toLocalDate()+" Second saturday holiday!!!");
+		if (weekOfMonth == 2 && dayOfWeek == 6) {
+			System.out.println(resultDateTime.toLocalDate() + " Second saturday holiday!");
 			isHoliday = true;
 		}
 
 		return isHoliday;
 
 	}
-
 }
